@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
 import seaborn as sns
+import numpy as np
 import matplotlib.pyplot as plt
-
+from scipy.signal import find_peaks
 
 # Set the page configuration to wide layout
 st.set_page_config(layout="wide")
@@ -46,7 +47,20 @@ st.markdown("""
             text-shadow: 3px 3px 6px rgba(255, 255, 255, 0.3);
             padding-bottom: 30px;
         }
-
+            
+        ab {
+            text-align: center;
+            font-size: 28px;
+            color: #f54949;
+            text-shadow: 3px 3px 6px rgba(255, 255, 255, 0.3);
+        }
+        
+        norm {
+            text-align: center;
+            font-size: 28px;
+            color: #46fa79;
+            text-shadow: 3px 3px 6px rgba(255, 255, 255, 0.3);
+        }
 
         /* Sidebar Styles */
         .sidebar .sidebar-content {
@@ -156,24 +170,47 @@ st.markdown("<h2>Choose EKG file to upload here:</h2>", unsafe_allow_html= True)
 
 data = st.file_uploader(" ", type=["csv", "mat"])
 
-
-# Add statistics here:
-
-
-num_r_waves = 10000
-
-
-heart_rate = num_r_waves/60
-
-
-heart_rate_variability = 10
-
-
+# R-R Interval calculation
 if data is not None:
-
-
     df = pd.read_csv(data)
-       
+
+    # Dropdown to select columns
+    time_col = st.selectbox("Time column", df.columns[0])
+    ecg_col = st.selectbox("ECG signal column", df.columns[1:])
+
+    # Detect R-peaks
+    st.markdown("<h2>Summary:</h2>", unsafe_allow_html = True)
+
+    height_threshold = -49000
+
+    distance = 200
+
+    # Calculate R-R intervals
+    peaks, _ = find_peaks(df[ecg_col], height=height_threshold, distance=distance)
+    rr_intervals = np.diff(df[time_col].iloc[peaks])  # Time differences between successive R-peaks
+    rr_intervals_ms = rr_intervals * 1000
+
+    if (len(peaks)*2) > 100 or (len(peaks)*2) < 60:
+        st.markdown(f"<ab>Heart Rate: {(len(peaks) * 2)} bpm (Normal Range is 60 - 100 bpm) </ab>", unsafe_allow_html= True)
+        st.markdown(f"<ab>Number of R-peaks detected: {len(peaks)}</ab>", unsafe_allow_html= True)
+    else :
+        st.markdown(f"<norm>Heart Rate: {(len(peaks) * 2)} bpm (Normal Range is 60 - 100 bpm) </norm>", unsafe_allow_html= True)
+        st.markdown(f"<norm>Number of R-peaks detected: {len(peaks)}</norm>", unsafe_allow_html= True)
+
+    
+
+    # Mark detected R-peaks
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.plot(df[time_col], df[ecg_col], label="ECG Signal", color="blue")
+    ax.plot(df[time_col].iloc[peaks], df[ecg_col].iloc[peaks], "rx", label="R-Peaks")
+    ax.set_title("R-Peak Detection")
+    ax.set_xlabel("Time (s)")
+    ax.set_ylabel("Voltage (mV)")
+    ax.legend()
+    ax.grid(True)
+    st.pyplot(fig)
+
+    
     # Ensure the data has a 'Time' column
     if 't' in df.columns:
         # List available columns for the leads (excluding 'Time')
