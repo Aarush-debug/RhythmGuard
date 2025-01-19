@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
 
 # Set the page configuration to wide layout
-st.set_page_config(layout="wide")
+st.set_page_config(page_title="Rhythm Guard", page_icon = "🫀", layout="wide" )
 
 
 #I like to eat cheese
@@ -187,8 +187,18 @@ if data is not None:
 
     # Calculate R-R intervals
     peaks, _ = find_peaks(df[ecg_col], height=height_threshold, distance=distance)
-    rr_intervals = np.diff(df[time_col].iloc[peaks])  # Time differences between successive R-peaks
-    rr_intervals_ms = rr_intervals * 1000
+    rr_intervals = np.array(np.diff(df[time_col].iloc[peaks]))  # Time differences between successive R-peaks
+    #rr_intervals_ms = rr_intervals * 1000
+
+    diff_rr_intervals = np.diff(rr_intervals)
+
+    print(diff_rr_intervals)
+
+    # Parasympathetic Tone
+    rmssd = np.sqrt(np.mean(diff_rr_intervals**2))
+
+    # Autonomic Tone
+    #sdnn = np.std(rr_intervals)
 
     if (len(peaks)*2) > 100 or (len(peaks)*2) < 60:
         st.markdown(f"<ab>Heart Rate: {(len(peaks) * 2)} bpm (Normal Range is 60 - 100 bpm) </ab>", unsafe_allow_html= True)
@@ -197,6 +207,10 @@ if data is not None:
         st.markdown(f"<norm>Heart Rate: {(len(peaks) * 2)} bpm (Normal Range is 60 - 100 bpm) </norm>", unsafe_allow_html= True)
         st.markdown(f"<norm>Number of R-peaks detected: {len(peaks)}</norm>", unsafe_allow_html= True)
 
+    if (rmssd) > 89 or (rmssd) < 20:
+        st.markdown(f"<ab>RMSSD(Root Mean Square of Successive Differences): {rmssd} ms (Normal Range is 20 - 89 ms) </ab>", unsafe_allow_html= True)
+    else :
+        st.markdown(f"<norm>RMSSD(Root Mean Square of Successive Differences): {rmssd} ms (Normal Range is 20 - 89 ms) </norm>", unsafe_allow_html= True)
     
 
     # Mark detected R-peaks
