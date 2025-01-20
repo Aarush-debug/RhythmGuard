@@ -137,19 +137,19 @@ st.markdown("<h2>A Smarter Beat: Real-Time Heart Monitoring with Machine Learnin
 st.sidebar.markdown("<div class='sidebar'>", unsafe_allow_html=True)
 st.sidebar.markdown("<h1>What is the problem?</h1>", unsafe_allow_html=True)
 st.sidebar.write(" ")
-st.sidebar.markdown("<p>Cardiovascular diseases (CVDs) are the leading cause of mortality globally, responsible for millions of deaths annually. Early and accurate monitoring of heart health can prevent severe cardiac events and improve long-term outcomes. Traditional heart monitoring devices are often expensive, bulky, and not designed for continuous use at home.</p>", unsafe_allow_html=True)
+st.sidebar.markdown("<p>Cardiovascular diseases (CVDs) are the leading cause of mortality globally, responsible for millions of deaths annually. Early and accurate monitoring of heart health can prevent severe cardiac events and improve long-term outcomes. Traditional monitering softwares are very unreliable and require subscriptions to give a detailed analysis. </p>", unsafe_allow_html=True)
 
 
 st.sidebar.markdown("<h1>What does our Innovation do?</h1>", unsafe_allow_html=True)
 st.sidebar.write(" ")
-st.sidebar.markdown("<p>Our innovation is a portable and real-time heart monitoring system that is both accessible and cost-effective. Using machine learning (LSTM-RL model) and math algorithms, we can accurately predict heart rate variability and identify potential cardiac abnormalities. By deploying ECG leads (Lead II, V6, and aVL), we can monitor key aspects of heart function, including overall rhythm and left ventricular activity.</p>", unsafe_allow_html=True)
+st.sidebar.markdown("<p>Our innovation is a heart monitering system that is both accessible and free to all users. Using a combination of machine learning (LSTM-RL model) and math algorithms, we can accurately predict heart rate variability and identify potential cardiac abnormalities. By deploying ECG leads (Lead II, V6, and aVL), we can monitor key aspects of heart function, including overall rhythm and left ventricular activity.</p>", unsafe_allow_html=True)
 st.sidebar.markdown("</div>", unsafe_allow_html=True)
 
 
 # Columns with icons or descriptions
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.markdown("<div class='stColumn'><h3>Early Detection</h3><p>Real-time monitoring helps catch potential heart issues early.</p></div>", unsafe_allow_html=True)
+    st.markdown("<div class='stColumn'><h3>Early Detection</h3><p>Effective monitoring helps catch potential heart issues early.</p></div>", unsafe_allow_html=True)
 with col2:
     st.markdown("<div class='stColumn'><h3>Personalized Insights</h3><p>Tailored feedback helps users make informed health decisions.</p></div>", unsafe_allow_html=True)
 with col3:
@@ -158,11 +158,11 @@ with col3:
 
 col4, col5, col6 = st.columns(3)
 with col4:
-    st.markdown("<div class='stColumn'><h3>Variable Detection</h3><p>Detects conditions like Ventricular Fibrillation, Ventricular Tachycardia, Atrial Fibrillation, and Atrial Tachycardia, ensuring timely care to prevent worsening</p></div>", unsafe_allow_html=True)
+    st.markdown("<div class='stColumn'><h3>Variable Detection</h3><p>Detects conditions like Ventricular Fibrillation, Ventricular Tachycardia, Atrial Fibrillation, and Atrial Tachycardia, ensuring timely care to prevent it from worsening.</p></div>", unsafe_allow_html=True)
 with col5:
     st.markdown("<div class='stColumn'><h3>Enhanced Communication</h3><p>Detailed reports that improve discussions with healthcare providers to help provide the best care for the patient.</p></div>", unsafe_allow_html=True)
 with col6:
-    st.markdown("<div class='stColumn'><h3>Personalized Insights</h3><p>Since Focuses on the left ventricle for precise and relevant insights.</p></div>", unsafe_allow_html=True)
+    st.markdown("<div class='stColumn'><h3>Comprehensive Review</h3><p>Uses heart measurements such as RMSSD and SDNN to ensure accurate analysis.</p></div>", unsafe_allow_html=True)
 
 
 st.markdown("<h2>Choose EKG file to upload here:</h2>", unsafe_allow_html= True)
