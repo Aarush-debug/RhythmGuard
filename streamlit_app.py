@@ -3,7 +3,7 @@ import pandas as pd
 import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.signal import find_peaks
+from scipy.signal import find_peaks #neurokit instead
 
 # Set the page configuration to wide layout
 st.set_page_config(page_title="Rhythm Guard", page_icon = "🫀", layout="wide" )
@@ -180,8 +180,7 @@ if data is not None:
 
     # Detect R-peaks
     st.markdown("<h2>Summary:</h2>", unsafe_allow_html = True)
-
-    height_threshold = -49000
+    height_threshold = np.percentile(df[ecg_col], 95)
 
     distance = 200
 
@@ -198,7 +197,7 @@ if data is not None:
     rmssd = np.sqrt(np.mean(diff_rr_intervals**2))
 
     # Autonomic Tone
-    #sdnn = np.std(rr_intervals)
+    sdnn = np.std(rr_intervals)
 
     if (len(peaks)*2) > 100 or (len(peaks)*2) < 60:
         st.markdown(f"<ab>Heart Rate: {(len(peaks) * 2)} bpm (Normal Range is 60 - 100 bpm) </ab>", unsafe_allow_html= True)
@@ -211,7 +210,13 @@ if data is not None:
         st.markdown(f"<ab>RMSSD(Root Mean Square of Successive Differences): {rmssd} ms (Normal Range is 20 - 89 ms) </ab>", unsafe_allow_html= True)
     else :
         st.markdown(f"<norm>RMSSD(Root Mean Square of Successive Differences): {rmssd} ms (Normal Range is 20 - 89 ms) </norm>", unsafe_allow_html= True)
-    
+
+    if (sdnn) > 100 or (sdnn) < 50:
+        st.markdown(f"<ab>SDNN(Standard Deviation of N-N waves): {sdnn} ms (Normal Range is 50 - 100 ms) </ab>", unsafe_allow_html= True)
+    else :
+        st.markdown(f"<norm>SDNN(Standard Deviation of N-N waves): {sdnn} ms (Normal Range is 50 - 100 ms) </norm>", unsafe_allow_html= True)
+        
+    st.markdown("<norm> Normal Sinus Rhythm</norm>", unsafe_allow_html= True)
 
     # Mark detected R-peaks
     fig, ax = plt.subplots(figsize=(10, 5))
